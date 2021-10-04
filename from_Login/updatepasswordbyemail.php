@@ -57,14 +57,14 @@ $jsondata = json_decode(file_get_contents('php://input'),true);
         $apichackrow = mysqli_num_rows($chack);
         if ($apichackrow > 0) {
             $email = isset($_GET['email']) ? $_GET['email'] : die();
-            $types = isset($_GET['types']) ? $_GET['types'] : die();
-            $sql = "SELECT * FROM user_information WHERE email='$email'AND types='$types'";
+            // $type = isset($_GET['type']) ? $_GET['type'] : die();
+            $sql = "SELECT * FROM fromlogininformation WHERE email='$email'";
             $result = mysqli_query($conn, $sql);
             if ($result) {
                 $checkrows=mysqli_num_rows($result);
                 if ($checkrows > 0) {
                     $passwords = $jsondata['passwords'];
-                    $sqldata = "UPDATE user_information SET passwords='$passwords' WHERE email='$email' AND types='$types'";
+                    $sqldata = "UPDATE fromlogininformation SET passwords='$passwords' WHERE email='$email'";
                     if (mysqli_query($conn, $sqldata)) {
                         echo '{"result" : "success"}';
                     }else{
@@ -74,20 +74,20 @@ $jsondata = json_decode(file_get_contents('php://input'),true);
                     
                 }else{
                     header('X-PHP-Response-Code: 404', true, 404);
-                    echo "User Not found"; 
+                    echo '{"result" : "user not found"}'; 
                 }  
             }
         }else{
           header('X-PHP-Response-Code: 404', true, 404);
-          echo "User Not found"; 
+          echo '{"result" : "user not found"}';
         }
     }else{
-        echo "databse not connect";
+        echo '{"result" : "database not connect"}';
     }
   
 
  }else{
-     echo "invelid api token";
+    echo '{"result" : "invalid token"}';
  }
 
 

@@ -54,23 +54,27 @@ if(isset($_GET['api_token'])){
     $full_name = $jsondata['full_name'];
     $email = $jsondata['email'];
     $passwords = $jsondata['passwords'];
-    $photo_url = $jsondata['photo_url'];
-    $account_id = $jsondata['account_id'];
-    $types = $jsondata['types'];
+    // $photo_url = $jsondata['photo_url'];
+    // $account_id = $jsondata['account_id'];
+    $type = $jsondata['type'];
 
-    $check=mysqli_query($conn,"select * from user_information where email='$email'");
-    $checkrows=mysqli_num_rows($check);
+        $checkfrom=mysqli_query($conn,"select * from fromlogininformation where email='$email'");
+        $checkgoogle = mysqli_query($conn,"select * from google_login where email='$email'");
+        $checkfromrows=mysqli_num_rows($checkfrom);
+        $checkgooglerow = mysqli_num_rows($checkgoogle);
 
-    if($checkrows > 0){
+    if($checkfromrows > 0 || $checkgooglerow > 0){
         header('X-PHP-Response-Code: 404', true, 404);
         echo "customer exists"; 
     }else{
        
-        $sql1 = "INSERT INTO user_information (full_name, email, passwords, photo_url, account_id, types) VALUES ('$full_name','$email','$passwords','$photo_url','$account_id','$types')";
+        $sql1 = "INSERT INTO fromlogininformation (full_name, email, passwords, type) VALUES ('$full_name','$email','$passwords','$type')";
 
         if (mysqli_query($conn, $sql1)) {
+            
             echo '{"result" : "success"}';
         }else{
+            header('X-PHP-Response-Code: 404', true, 404);
             echo '{"result" : "sql error"}';
         }
     }
