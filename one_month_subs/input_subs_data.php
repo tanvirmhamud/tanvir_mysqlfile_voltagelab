@@ -1,17 +1,14 @@
 <?php
 
-// $servername = "localhost";
-// $dbname = "tanvir";
-// $dbuser = "root";
-// $dbpassword ="";
+$servername = "localhost";
+$dbname = "tanvir";
+$dbuser = "root";
+$dbpassword ="";
 
 
 
 
-$servername = "db5005028278.hosting-data.io";
-$dbname = "dbs4203476";
-$dbuser = "dbu2425027";
-$dbpassword ="il0vey0uma@@@";
+
 
 $conn = new mysqli($servername, $dbuser, $dbpassword, $dbname);
 
@@ -29,20 +26,17 @@ if(isset($_GET['api_token'])){
         if ($chackrow > 0) {
             $fullname = $jsondata['fullname'];
             $email = $jsondata['email'];
-            $bkash_phone_number = $jsondata['bkash_phone_number'];
-            $bkash_transaction_id = $jsondata['bkash_transaction_id'];
-            $rocket_phone_number = $jsondata['rocket_phone_number'];
-            $rocket_transaction_id = $jsondata['rocket_transaction_id'];
-            $nagad_phone_number = $jsondata['nagad_phone_number'];
-            $nagad_transaction_id = $jsondata['nagad_transaction_id'];
+            $phone_num = $jsondata['phone_num'];
+            $transactionid = $jsondata['transactionid'];
             $start_date = $jsondata['start_date'];
             $end_date = $jsondata['end_date'];
             $status = $jsondata['status'];
-            $types = $jsondata['types'];
-            $subscription_pack = $jsondata['subscription_pack'];
             $remaining = $jsondata['remaining'];
+            $subscription_pack = $jsondata['subscription_pack'];
+            $payment_type = $jsondata['payment_type'];
+            $login_type = $jsondata['login_type'];
 
-            $check=mysqli_query($conn,"select * from subscription_one_month where email='$email'");
+            $check=mysqli_query($conn,"select * from one_month_subs where email='$email' AND transactionid='$transactionid'");
             $checkrows=mysqli_num_rows($check);
 
             if($checkrows > 0){
@@ -50,7 +44,7 @@ if(isset($_GET['api_token'])){
                 echo "customer exists"; 
             }else{
                
-                $sql1 = "INSERT INTO subscription_one_month(fullname, email, bkash_phone_number, bkash_transaction_id, rocket_phone_number, rocket_transaction_id, nagad_phone_number, nagad_transaction_id, start_date, end_date, status, types, subscription_pack, remaining) VALUES ('$fullname','$email','$bkash_phone_number','$bkash_transaction_id','$rocket_phone_number','$rocket_transaction_id','$nagad_phone_number','$nagad_transaction_id','$start_date','$end_date','$status','$types','$subscription_pack','$remaining')";
+                $sql1 = "INSERT INTO one_month_subs(fullname, email, phone_num, transactionid, start_date, end_date, status, remaining, subscription_pack, payment_type, login_type) VALUES ('$fullname','$email','$phone_num','$transactionid','$start_date','$end_date','$status','$remaining','$subscription_pack','$payment_type','$login_type')";
         
                 if (mysqli_query($conn, $sql1)) {
                     echo '{"result" : "success"}';
