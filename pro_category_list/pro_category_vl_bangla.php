@@ -15,7 +15,7 @@ $conn = new mysqli($servername, $dbuser, $dbpassword, $dbname);
             $chack = mysqli_query($conn, $sqlapi);
             $chackrow = mysqli_num_rows($chack);
             if ($chackrow > 0) {
-                $sql = "SELECT * FROM pro_categorylist";
+                $sql = "SELECT * FROM pro_category_vl_bangla";
                 $result = mysqli_query($conn, $sql);
                 if ($result) {
                     $checkrows=mysqli_num_rows($result);
