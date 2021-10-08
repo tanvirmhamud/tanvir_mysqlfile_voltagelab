@@ -36,15 +36,21 @@ if(isset($_GET['api_token'])){
             $payment_type = $jsondata['payment_type'];
             $login_type = $jsondata['login_type'];
 
-            $check=mysqli_query($conn,"select * from one_month_subs where email='$email' AND transactionid='$transactionid'");
+            $check=mysqli_query($conn,"select * from subscription_package where email='$email'");
             $checkrows=mysqli_num_rows($check);
 
             if($checkrows > 0){
-                header('X-PHP-Response-Code: 404', true, 404);
-                echo "customer exists"; 
+                $sql2 = "UPDATE subscription_package SET phone_num='$phone_num', transactionid= '$transactionid', start_date ='$start_date', end_date= '$end_date', status = '$status', remaining ='$remaining', subscription_pack ='$subscription_pack', payment_type= '$payment_type', login_type='$login_type' WHERE email='$email'";
+                
+                if (mysqli_query($conn, $sql2)) {
+                    echo '{"result" : "Update successfull"}';
+                }else{
+                    header('X-PHP-Response-Code: 404', true, 404);
+                    echo '{"result" : "sql error"}';
+                }
             }else{
                
-                $sql1 = "INSERT INTO one_month_subs(fullname, email, phone_num, transactionid, start_date, end_date, status, remaining, subscription_pack, payment_type, login_type) VALUES ('$fullname','$email','$phone_num','$transactionid','$start_date','$end_date','$status','$remaining','$subscription_pack','$payment_type','$login_type')";
+                $sql1 = "INSERT INTO subscription_package(fullname, email, phone_num, transactionid, start_date, end_date, status, remaining, subscription_pack, payment_type, login_type) VALUES ('$fullname','$email','$phone_num','$transactionid','$start_date','$end_date','$status','$remaining','$subscription_pack','$payment_type','$login_type')";
         
                 if (mysqli_query($conn, $sql1)) {
                     echo '{"result" : "success"}';

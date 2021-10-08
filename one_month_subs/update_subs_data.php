@@ -18,14 +18,14 @@ $jsondata = json_decode(file_get_contents('php://input'),true);
             if ($chackrow > 0) {
                 $email = isset($_GET['email']) ? $_GET['email'] : die();
                 $status = isset($_GET['status']) ? $_GET['status'] : die();
-                $sql = "SELECT * FROM one_month_subs WHERE email='$email'AND status='$status'";
+                $sql = "SELECT * FROM subscription_package WHERE email='$email'AND status='$status'";
                 $result = mysqli_query($conn, $sql);
                 if ($result) {
                     $checkrows=mysqli_num_rows($result);
                     if ($checkrows > 0) {
                         if ($jsondata['status'] == null) {
                             $remaining = $jsondata['remaining'];
-                            $sqldata = "UPDATE one_month_subs SET remaining='$remaining' WHERE email='$email' AND status='$status'";
+                            $sqldata = "UPDATE subscription_package SET remaining='$remaining' WHERE email='$email' AND status='$status'";
                             if (mysqli_query($conn, $sqldata)) {
                                 echo '{"result" : "success"}';
                             } else{
@@ -35,7 +35,7 @@ $jsondata = json_decode(file_get_contents('php://input'),true);
                          } else {
                                 $status1 = $jsondata['status'];
                                 $remaining = $jsondata['remaining'];
-                                $sqldata1 = "UPDATE one_month_subs SET status='$status1', remaining='$remaining' WHERE email='$email' AND status='$status'";
+                                $sqldata1 = "UPDATE subscription_package SET status='$status1', remaining='$remaining' WHERE email='$email' AND status='$status'";
                           if (mysqli_query($conn, $sqldata1)) {
                             echo '{"result" : "success"}';
                           }else{

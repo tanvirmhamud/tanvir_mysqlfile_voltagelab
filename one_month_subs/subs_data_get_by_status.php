@@ -17,7 +17,7 @@ $conn = new mysqli($servername, $dbuser, $dbpassword, $dbname);
             $chack = mysqli_query($conn, $sqlapi);
             $chackrow = mysqli_num_rows($chack);
             if ($chackrow > 0) {
-                $sql = "SELECT * FROM one_month_subs WHERE email='$email'AND status='$status'";
+                $sql = "SELECT * FROM subscription_package WHERE email='$email'AND status='$status'";
                 $result = mysqli_query($conn, $sql);
                 if ($result) {
                     $checkrows=mysqli_num_rows($result);
